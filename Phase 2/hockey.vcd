@@ -1,0 +1,525 @@
+$date
+	Tue Jan 02 11:45:19 2024
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module hockey_tb $end
+$var wire 3 ! Y_COORD [2:0] $end
+$var wire 3 " X_COORD [2:0] $end
+$var parameter 96 # FFP $end
+$var parameter 64 $ FP $end
+$var parameter 32 % HP $end
+$var reg 1 & BTN_A $end
+$var reg 1 ' BTN_B $end
+$var reg 2 ( DIR_A [1:0] $end
+$var reg 2 ) DIR_B [1:0] $end
+$var reg 3 * Y_in_A [2:0] $end
+$var reg 3 + Y_in_B [2:0] $end
+$var reg 1 , clk $end
+$var reg 1 - rst $end
+$scope module dut $end
+$var wire 1 & BTN_A $end
+$var wire 1 ' BTN_B $end
+$var wire 2 . DIR_A [1:0] $end
+$var wire 2 / DIR_B [1:0] $end
+$var wire 3 0 Y_in_A [2:0] $end
+$var wire 3 1 Y_in_B [2:0] $end
+$var wire 1 , clk $end
+$var wire 1 - rst $end
+$var parameter 32 2 DISP $end
+$var parameter 32 3 END_GAME $end
+$var parameter 32 4 GOAL_A $end
+$var parameter 32 5 GOAL_B $end
+$var parameter 32 6 HIT_A $end
+$var parameter 32 7 HIT_B $end
+$var parameter 32 8 IDLE $end
+$var parameter 32 9 RESP_A $end
+$var parameter 32 : RESP_B $end
+$var parameter 32 ; SEND_A $end
+$var parameter 32 < SEND_B $end
+$var reg 3 = X_COORD [2:0] $end
+$var reg 3 > Y_COORD [2:0] $end
+$var reg 2 ? Y_DIR [1:0] $end
+$var reg 4 @ current_state [3:0] $end
+$var reg 2 A score_A [1:0] $end
+$var reg 2 B score_B [1:0] $end
+$var reg 8 C timer [7:0] $end
+$var reg 1 D timer_amount $end
+$var reg 1 E turn $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b101 <
+b100 ;
+b111 :
+b110 9
+b0 8
+b11 7
+b10 6
+b1001 5
+b1000 4
+b1010 3
+b1 2
+b101 %
+b1010 $
+b11110 #
+$end
+#0
+$dumpvars
+xE
+xD
+bx C
+bx B
+bx A
+bx @
+bx ?
+bx >
+bx =
+b0 1
+b0 0
+b0 /
+b0 .
+0-
+0,
+b0 +
+b0 *
+b0 )
+b0 (
+0'
+0&
+bx "
+bx !
+$end
+#5
+1,
+#10
+b0 @
+b0 B
+b0 A
+0E
+0D
+b0 C
+b0 ?
+b0 !
+b0 >
+b0 "
+b0 =
+0,
+1-
+#15
+1,
+#20
+0,
+1&
+0-
+#25
+b1 @
+1,
+#30
+0,
+0&
+#35
+b10 @
+1,
+#40
+0,
+1&
+b1 (
+b1 .
+b1 *
+b1 0
+#45
+b101 @
+b1 ?
+b1 !
+b1 >
+1,
+#50
+0,
+0&
+#55
+b1 "
+b1 =
+b10 !
+b10 >
+1,
+#60
+0,
+#65
+b10 "
+b10 =
+b11 !
+b11 >
+1,
+#70
+0,
+#75
+b11 "
+b11 =
+b100 !
+b100 >
+1,
+#80
+0,
+1'
+b10 +
+b10 1
+#85
+b111 @
+b100 "
+b100 =
+b11 !
+b11 >
+b10 ?
+1,
+#90
+0,
+0'
+#95
+b1000 @
+b1 A
+1,
+#100
+0,
+#105
+b11 @
+1,
+#110
+0,
+#115
+1,
+#120
+0,
+1'
+#125
+b100 @
+b0 ?
+b10 !
+b10 >
+1,
+#130
+0,
+0'
+#135
+b11 "
+b11 =
+1,
+#140
+0,
+#145
+b10 "
+b10 =
+1,
+#150
+0,
+#155
+b1 "
+b1 =
+1,
+#160
+0,
+1&
+b10 (
+b10 .
+#165
+b110 @
+b0 "
+b0 =
+1,
+#170
+0,
+0&
+#175
+b1001 @
+b1 B
+1,
+#180
+0,
+#185
+b10 @
+1,
+#190
+0,
+#195
+1,
+#200
+0,
+1&
+b100 *
+b100 0
+#205
+b101 @
+b10 ?
+b100 !
+b100 >
+1,
+#210
+0,
+0&
+#215
+b1 "
+b1 =
+b11 !
+b11 >
+1,
+#220
+0,
+#225
+b10 "
+b10 =
+b10 !
+b10 >
+1,
+#230
+0,
+#235
+b11 "
+b11 =
+b1 !
+b1 >
+1,
+#240
+0,
+1'
+b11 +
+b11 1
+#245
+b111 @
+b100 "
+b100 =
+b0 !
+b0 >
+1,
+#250
+0,
+0'
+#255
+b1000 @
+b10 A
+1,
+#260
+0,
+#265
+b11 @
+1,
+#270
+0,
+#275
+1,
+#280
+0,
+1'
+b10 )
+b10 /
+b1 +
+b1 1
+#285
+b100 @
+b1 !
+b1 >
+1,
+#290
+0,
+0'
+#295
+b11 "
+b11 =
+b0 !
+b0 >
+1,
+#300
+0,
+#305
+b10 "
+b10 =
+b1 !
+b1 >
+b1 ?
+1,
+#310
+0,
+#315
+b1 "
+b1 =
+b10 !
+b10 >
+1,
+#320
+0,
+1&
+b0 (
+b0 .
+b11 *
+b11 0
+#325
+b110 @
+b0 "
+b0 =
+b11 !
+b11 >
+1,
+#330
+0,
+0&
+#335
+b1001 @
+b10 B
+1,
+#340
+0,
+#345
+b10 @
+1,
+#350
+0,
+#355
+1,
+#360
+0,
+1'
+b1 )
+b1 /
+b11 +
+b11 1
+#365
+1,
+#370
+0,
+0'
+#375
+1,
+#380
+0,
+#385
+1,
+#390
+0,
+#395
+1,
+#400
+0,
+1&
+b10 (
+b10 .
+b1 *
+b1 0
+#405
+b101 @
+b10 ?
+b1 !
+b1 >
+1,
+#410
+0,
+0&
+#415
+b1 "
+b1 =
+b0 !
+b0 >
+1,
+#420
+0,
+#425
+b10 "
+b10 =
+b1 !
+b1 >
+b1 ?
+1,
+#430
+0,
+#435
+b11 "
+b11 =
+b10 !
+b10 >
+1,
+#440
+0,
+1'
+b0 )
+b0 /
+b10 +
+b10 1
+#445
+b111 @
+b100 "
+b100 =
+b11 !
+b11 >
+1,
+#450
+0,
+0'
+#455
+b1000 @
+b11 A
+1,
+#460
+0,
+#465
+b1010 @
+1,
+#470
+0,
+#475
+1,
+#480
+0,
+#485
+1,
+#490
+0,
+#495
+1,
+#500
+0,
+#505
+1,
+#510
+0,
+#515
+1,
+#520
+0,
+#525
+1,
+#530
+0,
+#535
+1,
+#540
+0,
+#545
+1,
+#550
+0,
+#555
+1,
+#560
+0,
+#565
+1,
+#570
+b0 @
+b0 B
+b0 A
+b0 ?
+b0 !
+b0 >
+b0 "
+b0 =
+0,
+1-
+#575
+1,
+#580
+0,
+0-
