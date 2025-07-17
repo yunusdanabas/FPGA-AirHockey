@@ -1,62 +1,158 @@
-# FPGA Air-Hockey: Digital Showdown
+# FPGA Air-Hockey — Digital Showdown
 
-## Overview
+A two-player air-hockey game implemented **entirely in Verilog** and deployed on the **Digilent Nexys A7** FPGA board. A 5 × 5 LED matrix animates the puck, while dual seven-segment displays keep score and show live coordinates. Built for Sabancı University’s “Logic & Digital System Design” course (Fall 2023-24), the project walks through all classic stages of an FPGA design—state-diagram modelling, simulation, synthesis, timing closure, and on-board bring-up—yet remains an addictive dorm-room time-killer.
 
-This project implements a two-player electronic air-hockey game on an FPGA using a 5×5 digital playground. The game simulates a moving puck with LED arrays and displays coordinates and scores on seven-segment displays. The design was realized using Verilog and implemented on the Nexys A7 board. This repository contains all the source files, simulation testbenches, and supplementary modules needed for the project.
+<p align="center">
+  <img src="Board.jpg" alt="Nexys A7 with FPGA-AirHockey loaded" width="70%">
+  <br><em>Nexys A7 running FPGA-AirHockey (puck mid-flight)</em>
+</p>
 
-## Features
+---
 
-- **Two-Player Game:** Designed for players on opposite sides of the board using dedicated buttons and switches.
-- **Dynamic Gameplay:** The puck moves across a 5×5 grid with variable speed settings. Players can adjust puck speed (0.5s and 1s per step) and even customize the number of goals required to win.
-- **Real-Time Display:** Uses LED arrays to simulate puck movement and seven-segment displays to show puck coordinates and scores.
-- **Robust Design:** Integrates essential modules such as a clock divider, debouncer, and SSD (seven-segment display) driver.
-- **FPGA Implementation:** Fully demonstrated on the Nexys A7 board with supporting constraint files and documentation.
+## Table of Contents
 
-## Project Structure
+1. [Quick Start](#-quick-start)
+2. [Gameplay Overview](#-gameplay-overview)
+3. [Features](#-features)
+4. [How It Works](#-how-it-works)
+5. [Project Structure](#-project-structure)
+6. [Build & Run](#-build--run)
+7. [Customization](#-customization)
+8. [Demo Video](#-demo-video)
+9. [License & Credits](#-license--credits)
 
-- **Phase 1:**  
-  - Design diagrams and state flow (see *Phase1.pdf*)  
-- **Phase 2:**  
-  - Core game logic implemented in Verilog (e.g., *hockey.v*, *hockey_tb.v*, and simulation files)
-- **Phase 3:**  
-  - Additional modules and templates:  
-    - Clock divider (*clk_divider.v*)  
-    - Debouncer (*debouncer.v*)  
-    - Seven-segment display driver (*ssd.v*)  
-    - Top module template (*top_module - template.v*)  
-  - Supporting files such as constraint files (*project.xdc*)  
-- **Supplementary Assets:**  
-  - Gameplay video (*Gameplay.mp4*)  
-  - FPGA board image (*Board.jpg*)  
-  - Nexys A7 Reference Manual (*nexys-a7_rm.pdf*)
+---
 
-## How It Works
+## 🚀 Quick Start
 
-1. **Initialization:**  
-   Upon starting, the game displays the initial score (0-0) and waits for Player A’s input.
-2. **Game Play:**  
-   - **Player Input:** Each player uses their dedicated button (BTNL for Player A, BTNR for Player B) along with slide switches to choose the puck’s trajectory.
-   - **Puck Movement:** The game simulates puck motion across the board, with LED columns lighting up sequentially to represent movement.
-   - **Scoring:** If a player fails to hit the puck in time or chooses an invalid coordinate, the other player scores a point. The game displays the current score and indicates the next turn.
-3. **Winning Condition:**  
-   The game concludes when a player scores 3 goals (or a user-defined goal limit). The final score and winning player are displayed, and the LEDs flash to signal the win.
+```bash
+# 1 – Clone
+git clone https://github.com/yunusdanabas/FPGA-AirHockey.git
+cd FPGA-AirHockey
 
-## Setup & Usage
+# 2 – Open in Vivado (2023.1+ recommended)
+vivado FPGA-AirHockey.xpr &
 
-1. **Simulation:**  
-   - Use the provided testbench (*hockey_tb.v*) to simulate the game logic.
-   - Verify timing and state transitions in your simulation environment.
+# 3 – Generate bitstream
+#    (Flow Navigator ▶ Program & Debug ▶ Generate Bitstream)
 
-2. **FPGA Implementation:**  
-   - Synthesize the design using Xilinx Vivado (or the recommended toolchain for Nexys A7).
-   - Ensure the constraint file (*project.xdc*) is correctly set for the Nexys A7 board.
-   - Program the FPGA and observe the game demo using the on-board LEDs, switches, and seven-segment displays.
+# 4 – Program the Nexys A7
+open_hw_manager        # or use the Vivado GUI
+program_hw_devices
+```
 
-## Demo
+---
 
-A gameplay video (*Gameplay.mp4*) is included in this repository to showcase the game in action. Additionally, the attached board image (*Board.jpg*) illustrates the FPGA implementation setup.
+## 🏒 Gameplay Overview
 
-## Acknowledgments
+* **Two Players:** BTNL (Player A) and BTNR (Player B) act as paddles.
+* **Digital Rink:** A 5 × 5 LED grid visualises puck motion.
+* **Real-Time HUD:** Dual seven-segment displays show `[X,Y]` and running score.
+* **Win Condition:** First to the user-selected goal limit (default = 3) wins; LEDs flash in victory pattern.
 
-- **Course:** Logic & Digital System Design – Fall 2023-2024  
-- **Instructor :** Atıl Utku Ay
+---
+
+## ✨ Features
+
+| Category            | Highlights                                                               |
+| ------------------- | ------------------------------------------------------------------------ |
+| **Interactivity**   | Adjustable puck speed (0.5 s / 1 s), goal limit via slide switches       |
+| **Robust Design**   | Debounced inputs, metronome-style clock divider, one-hot FSM             |
+| **Visual Feedback** | Smooth LED “ping-pong” animation; score flashes on goal                  |
+| **Verification**    | Self-checking Verilog testbench (`hockey_tb.v`) for full match scenarios |
+| **Modularity**      | Re-usable `clk_divider`, `debouncer`, `ssd_driver` sub-modules           |
+
+The section ordering and compact feature table follow the template used in my other robotics README files .
+
+---
+
+## ⚙️ How It Works
+
+1. **Initialization**
+   System resets to `IDLE`, scores `[0 : 0]`, puck centred.
+
+2. **Serve**
+   Player A presses **BTNL** → FSM enters `SEND_A`, LED column marches towards Player B.
+
+3. **Return / Miss**
+
+   * **Return:** Player B times **BTNR** at correct coordinate → FSM reverses direction (`SEND_B`).
+   * **Miss:** Timer expiry or wrong coordinate → Player A scores, score display blinks.
+
+4. **Victory**
+   Once `score_A` or `score_B` == `GOAL_LIMIT`, FSM transitions to `END_GAME`, LEDs alternate flash pattern.
+
+The full state diagram lives in *Phase1.pdf* and is reproduced in simplified form below:
+
+```text
+IDLE -> {SERVE_A | SERVE_B}
+SERVE_A -> SEND_A -> {RESP_B | GOAL_A}
+RESP_B -> {SERVE_B | GOAL_A}
+...
+GOAL_A/B -> {IDLE | END_GAME}
+```
+
+---
+
+## 📂 Project Structure
+
+```
+FPGA-AirHockey/
+├── src/
+│   ├── core/
+│   │   ├── hockey_fsm.v        # main state machine
+│   │   ├── clk_divider.v       # parameterisable clock scaler
+│   │   ├── debouncer.v         # single-pulse button cleaner
+│   │   └── ssd_driver.v        # seven-segment multiplexing
+│   └── top/
+│       └── top_airhockey.v     # pinout + core integration
+├── tb/
+│   └── hockey_tb.v             # self-checking testbench
+├── constr/
+│   └── nexys_a7.xdc            # pin constraints
+├── docs/
+│   └── Phase1.pdf              # design diagrams & FSM
+└── assets/
+    ├── img/                    # board photo, block diagrams
+    └── video/Gameplay.mp4      # demo clip
+```
+
+---
+
+## 🛠 Build & Run
+
+| Stage          | Command / Action                                           |
+| -------------- | ---------------------------------------------------------- |
+| **Simulate**   | `vivado -mode tcl -source run_tb.tcl` (runs `hockey_tb.v`) |
+| **Synthesise** | Flow Navigator ▶ “Run Synthesis”                           |
+| **Implement**  | Flow Navigator ▶ “Run Implementation”                      |
+| **Bitstream**  | Flow Navigator ▶ “Generate Bitstream”                      |
+| **Program**    | Connect Nexys A7 via USB-JTAG; click “Program Device…”     |
+
+---
+
+## 🔧 Customization
+
+| Parameter        | Location                | Description                    |
+| ---------------- | ----------------------- | ------------------------------ |
+| `PUCK_SPEED_SEL` | `top_airhockey.v`       | 0 = 1 s/step, 1 = 0.5 s/step   |
+| `GOAL_LIMIT`     | Slide switches SW\[2:0] | Goals to win (1-7)             |
+| `CLK_DIV`        | `clk_divider.v` generic | Output tick period (in cycles) |
+
+---
+
+## 🎞 Demo Video
+
+<p align="center">
+  <video src="assets/video/Gameplay.mp4" controls loop muted width="85%"></video>
+</p>
+
+---
+
+## 📜 License & Credits
+
+* **License:** MIT
+* **Course:** Logic & Digital System Design (Sabancı University, Fall 2023-24)
+* Special thanks to **Atıl Utku Ay** for project supervision and feedback.
+
+Enjoy the game, fork away, and may your debounce always be clean!
