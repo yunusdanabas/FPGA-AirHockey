@@ -9,20 +9,6 @@ A two-player air-hockey game implemented **entirely in Verilog** and deployed on
 
 ---
 
-## Table of Contents
-
-1. [Quick Start](#-quick-start)
-2. [Gameplay Overview](#-gameplay-overview)
-3. [Features](#-features)
-4. [How It Works](#-how-it-works)
-5. [Project Structure](#-project-structure)
-6. [Build & Run](#-build--run)
-7. [Customization](#-customization)
-8. [Demo Video](#-demo-video)
-9. [License & Credits](#-license--credits)
-
----
-
 ## 🚀 Quick Start
 
 ```bash
